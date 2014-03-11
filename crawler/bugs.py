@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from .crawl import crawl, html_select
+from .crawl import crawl, html_select, html_select_all
 
 
 class XPathGenerator(object):
@@ -8,7 +8,7 @@ class XPathGenerator(object):
 
     def __init__(self, base='//'):
         if isinstance(base, XPathGenerator):
-            self.base = base.route
+            self.base = base.route + '//'
         elif isinstance(base, basestring):
             self.base = base
         self._route = []
@@ -27,8 +27,15 @@ class XPathGenerator(object):
         return self
 
     @property
-    def route(self):
+    def route_all(self):
         return self.base + '//'.join(self._route)
+
+    @property
+    def route(self):
+        r = self.base + '//'.join(self._route)
+        if r.startswith('//'):
+            r = r[2:]
+        return r
 
 
 class RecentAlbum(object):
@@ -59,8 +66,8 @@ class BugsRecentAlbum(RecentAlbum):
 
      * new album list (`div.album > ul#idListNEWALBUM522 > li.listRow`)
      * thumbnail location (`album > div.thumbnail > span.albumImg > a > img`)
-     * artist name (`album > dl.albumInfo > dt > a.artistname`)
-     * track title (`album > dl.albumInfo > dd > a.tracktitle`)
+     * album name (`album > dl.albumInfo > dt > a.albumtitle`)
+     * artist name (`album > dl.albumInfo > dd > a.artistname`)
     """
 
     url = u'http://music.bugs.co.kr/newest/album/total'
@@ -69,4 +76,40 @@ class BugsRecentAlbum(RecentAlbum):
         super(BugsRecentAlbum, self).__init__(self.url)
 
     def parse(self, doc):
-        return doc
+        res = []
+        base_g = XPathGenerator()
+        base_g.find('div', class_='album')\
+              .find('ul', id='idListNEWALBUM522')\
+              .find('li', class_='listRow')
+        g = XPathGenerator()
+        g.find('div', class_='thumbnail', new=True)\
+         .find('span', class_='albumImg')\
+         .find('a')\
+         .find('img')
+        thumbnail_path = g.route
+        album_g = XPathGenerator("dl[contains(@class, 'albumInfo')]//")
+        album_g.find('dt')\
+               .find('a', class_='albumtitle')
+        albumtitle_path = album_g.route
+        album_g.find('dd', new=True)\
+               .find('a', class_='artistname')
+        artistname_path = album_g.route
+        li = html_select_all(doc, base_g.route_all)
+        for elem in li:
+            album = html_select(elem, albumtitle_path)
+            artist_name = html_select(elem, artistname_path)
+            item = {
+                'thumbnail': html_select(elem, thumbnail_path).attrib['src'],
+                'album_name': album.text_content(),
+                'album_link': album.attrib['href'],
+            }
+            if artist_name is not None:
+                item.update(
+                    artist_name=artist_name.text_content(),
+                    artist_link=artist_name.attrib['href'])
+            else:
+                item.update(
+                    artist_name='Various Artists',
+                    artist_link='http://bugs.co.kr')
+            res.append(item)
+        return res
