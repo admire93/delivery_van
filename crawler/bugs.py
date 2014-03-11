@@ -1,5 +1,35 @@
-# -*- coding: utf-8
+# -*- coding: utf-8 -*-
 from .crawl import crawl, html_select
+
+
+class XPathGenerator(object):
+    """Help generate the xpath.
+    """
+
+    def __init__(self, base='//'):
+        if isinstance(base, XPathGenerator):
+            self.base = base.route
+        elif isinstance(base, basestring):
+            self.base = base
+        self._route = []
+
+    def find(self, elem, class_=None, id=None, new=False):
+        if new:
+            self._route = []
+        path = ''
+        if id is not None:
+            path = elem + "[@id='%s']" % id
+        elif class_ is not None:
+            path = elem + "[contains(@class, '%s')]" % class_
+        else:
+            path = elem
+        self._route.append(path)
+        return self
+
+    @property
+    def route(self):
+        return self.base + '//'.join(self._route)
+
 
 class RecentAlbum(object):
 
