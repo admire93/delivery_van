@@ -5,15 +5,20 @@ class RecentAlbum(object):
 
     def __init__(self, url):
         self._page = (url + '?page={0}').format
+        self.doc = {}
+
+    def _load_doc(self, page, force=False):
+        if force or not self.doc or page not in self.doc:
+            a = crawl(self._page(page))
+            self.doc[page] = a
+        return self.doc[page]
 
     @property
     def newest(self):
-        doc = crawl(self._page(1))
-        return parse(doc)
+        return self.parse(self._load_doc(1))
 
     def page(self, n):
-        doc = crawl(self._page(n))
-        return parse(crawl)
+        return self.parse(self._load_doc(n))
 
     def parse(self, doc):
         raise NotImplemented()
@@ -34,6 +39,4 @@ class BugsRecentAlbum(RecentAlbum):
         super(BugsRecentAlbum, self).__init__(self.url)
 
     def parse(self, doc):
-        return {'album_name': 'abc',
-                'album_art_url': 'http://aa.com',
-                'artists': []}
+        return doc
