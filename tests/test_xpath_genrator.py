@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from crawler.bugs import XPathGenerator
+from dv.bugs import XPathGenerator
 
 def test_generator():
     g = XPathGenerator()

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from pytest import mark, config
 
-from crawler.crawl import crawl, html_select
-from crawler.bugs import BugsRecentAlbum
+from dv.crawl import crawl, html_select
+from dv.bugs import BugsRecentAlbum
 
 crawlskip = mark.skipif(not config.getvalue('crawl'),
                         reason="crawl is not available")
