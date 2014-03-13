@@ -1,4 +1,4 @@
-from flask import current_app
+from flask import current_app, g
 from alembic.config import Config
 from alembic.script import ScriptDirectory
 from werkzeug.local import LocalProxy
