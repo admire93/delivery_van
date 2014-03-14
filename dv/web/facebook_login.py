@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
-from flask import Blueprint, jsonify, url_for, session as web_session
+from flask import (Blueprint, jsonify, url_for, request, redirect,
+                   session as web_session)
 from flask_oauthlib.client import OAuth
+
+from ..user import User
+from ..db import session
+from .login import get_token
 
 
 bp = Blueprint('facebook_login',
@@ -28,13 +33,21 @@ def login():
 @bp.route('/login/authorized/', methods=['GET'])
 @fb.authorized_handler
 def authorized(resp):
-    if resp is None:
+    if resp is None or 'access_token' not in resp:
         return 'Access denied: reason=%s error=%s' % (
             request.args['error_reason'],
             request.args['error_description']
         )
     web_session['fb_token'] = (resp['access_token'], '')
-    return 'loggined?'
+    resp = fb.get('me', data={'locale': 'ko_KR'})
+    if resp.status == 200:
+        me = resp.data
+        user = User(name=me['name'], fb_id=me['id'])
+        session.add(user)
+        session.commit()
+        web_session['dv_token'] = get_token(user)
+        return redirect('/')
+    return redirect('error.failed')
 
 
 @fb.tokengetter
