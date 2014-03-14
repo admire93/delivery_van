@@ -2,6 +2,7 @@
 from flask import (Blueprint, jsonify, url_for, request, redirect,
                    session as web_session)
 from flask_oauthlib.client import OAuth
+from sqlalchemy.exc import IntegrityError
 
 from ..user import User
 from ..db import session
@@ -42,9 +43,20 @@ def authorized(resp):
     resp = fb.get('me', data={'locale': 'ko_KR'})
     if resp.status == 200:
         me = resp.data
-        user = User(name=me['name'], fb_id=me['id'])
-        session.add(user)
-        session.commit()
+        users = session.query(User)\
+                .filter(User.name == me['name'])\
+                .filter(User.fb_id == me['id'])\
+                .all()
+        if not users:
+            user = User(name=me['name'], fb_id=me['id'])
+            session.add(user)
+            try:
+                session.commit()
+            except IntegrityError:
+                session.rollback()
+                return redirect('error.failed')
+        else:
+            user = users[0]
         web_session['dv_token'] = get_token(user)
         return redirect(url_for('home'))
     return redirect('error.failed')

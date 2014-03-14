@@ -42,21 +42,22 @@ def is_logined():
     token = web_session.get('dv_token', None)
     if token:
         p = validate(token)
-        user = session.query(User)\
-               .filter(p['id'])\
-               .all()
-        if user:
-            return user
+        if p:
+            user = session.query(User)\
+                   .filter(User.id == p['id'])\
+                   .all()
+            if user:
+                return user[0]
     return False
 
 
-def need_login(f)
+def need_login(f):
     @wraps(f)
     def deco(*args, **kwargs):
         user = is_logined()
         if user:
             g.current_user = user
-            f(*args, **kwargs)
+            return f(*args, **kwargs)
         else:
             abort(400)
     return deco
