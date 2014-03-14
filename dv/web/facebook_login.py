@@ -46,10 +46,17 @@ def authorized(resp):
         session.add(user)
         session.commit()
         web_session['dv_token'] = get_token(user)
-        return redirect('/')
+        return redirect(url_for('home'))
     return redirect('error.failed')
 
 
 @fb.tokengetter
 def get_fb_token():
     return web_session.get('fb_token')
+
+
+@bp.route('/logout/', methods=['GET'])
+def logout():
+    web_session.pop('fb_token', None)
+    web_session.pop('dv_token', None)
+    return redirect(url_for('home'))
