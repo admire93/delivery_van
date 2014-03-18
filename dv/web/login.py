@@ -39,7 +39,7 @@ def validate(token):
 
 
 def is_logined():
-    token = web_session.get('dv_token', None)
+    token = web_session.get('dv_token', None) or request.args.get('token', None)
     if token:
         p = validate(token)
         if p:

@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint, url_for, g, render_template, abort, request
+from sqlalchemy.orm import joinedload
 from sqlalchemy.exc import IntegrityError
 
 from .login import need_login
-from ..user import User
+from ..user import User, LoveArtist
 from ..album import Artist
 from ..db import session
 
@@ -44,17 +45,25 @@ def add_love_artist(user_id):
         .filter(Artist.name == name)\
         .all()
     if not a:
-        a = Artist(name=name)
-        session.add(a)
-        try:
-            session.commit()
-        except IntegrityError:
-            session.rollback()
-            abort(500)
+        artist = Artist(name=name)
+        session.add(artist)
+    else:
+        artist = a[0]
+    user.love_artists.add(artist)
+    session.add(user)
+    try:
+        session.commit()
+    except IntegrityError:
+        session.rollback()
+        abort(500)
     return 'added'
 
 
 @bp.route('/<int:user_id>/love_artist/', methods=['GET'])
 @need_login
 def love_artist(user_id):
-    return render_template('love_artist.html')
+    user = sesison.query(User)\
+           .options(joinedload(User.love_artist))\
+           .filter(User.id == user_id)\
+           .all()
+    return render_template('love_artist.html', love_artists=user.love_artists)

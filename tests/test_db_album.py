@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from pytest import fixture
-
 from dv.album import Album, Artist
 from dv.bugs import BugsRecentAlbum
 
@@ -18,14 +16,6 @@ def test_artist(f_session):
     damien = finded[0]
     assert a.name == damien.name
     assert damien.created_at
-
-
-@fixture
-def f_artist(f_session):
-    damien = Artist(name='Damien Rice')
-    f_session.add(damien)
-    f_session.commit()
-    return damien
 
 
 def test_album(f_artist, f_session):
