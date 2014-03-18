@@ -8,6 +8,9 @@ from sqlalchemy.orm import relationship
 from .db import Base
 
 
+__all__ = 'Album', 'Artist',
+
+
 class Album(Base):
 
     id = Column(Integer, primary_key=True)

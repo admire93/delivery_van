@@ -5,6 +5,8 @@ from sqlalchemy.orm import sessionmaker
 
 from dv.web.app import app
 from dv.db import get_session, Base, get_engine
+from dv.album import Artist
+from dv.user import User
 
 
 @fixture
@@ -37,3 +39,18 @@ def f_page():
     with open('./tests/assets/test.html', 'r') as f:
         return f.read()
 
+
+@fixture
+def f_artist(f_session):
+    damien = Artist(name='Damien Rice')
+    f_session.add(damien)
+    f_session.commit()
+    return damien
+
+
+@fixture
+def f_user(f_session):
+    user = User(name='me', fb_id='102000001')
+    f_session.add(user)
+    f_session.commit()
+    return user
