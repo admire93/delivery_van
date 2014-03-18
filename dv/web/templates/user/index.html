@@ -2,11 +2,17 @@
 
 {% block htmlbody %}
 <h1> Hello {{ user.name }} </h1>
-<form method="POST">
-  <div>
-    <legend>관심있는 아티스트 이름</legend>
-    <input type="name" name="name">
-  </div>
-  <input type="submit" value="추가하기">
-</form>
+{% if me -%}
+<form method="POST"
+      action="{{ url_for('.add_love_artist', user_id=user.id) }}">
+    <div>
+      <legend>관심있는 아티스트 이름</legend>
+      <input type="name" name="artist_name">
+    </div>
+    <input type="submit" value="추가하기">
+  </form>
+{%- endif %}
+<a href="{{ url_for('.love_artist', user_id=user.id) }}">
+{{ user.name }} 님이 관심있어하는 아티스트들
+</a>
 {% endblock %}
