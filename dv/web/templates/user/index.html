@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block htmlbody %}
+<h1> Hello {{ user.name }} </h1>
+<form method="POST">
+  <div>
+    <legend>관심있는 아티스트 이름</legend>
+    <input type="name" name="name">
+  </div>
+  <input type="submit" value="추가하기">
+</form>
+{% endblock %}

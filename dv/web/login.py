@@ -3,7 +3,7 @@ from hashlib import sha256
 from datetime import datetime
 from functools import wraps
 
-from flask import current_app, json, g, session as web_session
+from flask import current_app, json, g, abort, session as web_session
 
 from ..db import session
 from ..user import User
@@ -59,5 +59,5 @@ def need_login(f):
             g.current_user = user
             return f(*args, **kwargs)
         else:
-            abort(400)
+            abort(403)
     return deco

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block htmlbody %}
+<form method="POST" action="{{ url_for('.add') }}">
+  <div>
+    <legend>아티스트 이름</legend>
+    <input type="name" name="name">
+  </div>
+  <input type="submit" value="추가하기">
+</form>
+<table border="1">
+  <thead>
+    <tr>
+      <th>이름</th>
+      <th>추가된 날짜</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for artist in artists -%}
+      <tr>
+        <td>{{ artist.name }}</td>
+        <td>{{ artist.created_at }}</td>
+      </tr>
+    {%- endfor %}
+  </tbody>
+</table>
+{% endblock %}
