@@ -47,10 +47,16 @@ def add_love_artist(user_id):
     if not a:
         artist = Artist(name=name)
         session.add(artist)
+        love_artist = []
     else:
         artist = a[0]
-    rel = LoveArtist(artist=artist, user=user[0])
-    session.add(rel)
+        love_artist = session.query(LoveArtist)\
+                      .filter(LoveArtist.artist_id == artist.id)\
+                      .filter(LoveArtist.user_id == user[0].id)\
+                      .all()
+    if not love_artist:
+        rel = LoveArtist(artist=artist, user=user[0])
+        session.add(rel)
     try:
         session.commit()
     except IntegrityError as e:
