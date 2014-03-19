@@ -8,9 +8,11 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>something</td>
-    </tr>
+      {% for artist in love_artists -%}
+        <tr>
+          <td>{{ artist.artist.name }}</td>
+        </tr>
+      {%- endfor %}
   </tbody>
 </table>
 {% endblock %}

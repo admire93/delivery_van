@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from flask import Blueprint, url_for, g, render_template, abort, request
+from flask import (Blueprint, url_for, g, render_template, abort, request,
+                   redirect)
 from sqlalchemy.orm import contains_eager
 from sqlalchemy.exc import IntegrityError
 
@@ -62,14 +63,13 @@ def add_love_artist(user_id):
     except IntegrityError as e:
         session.rollback()
         abort(500)
-    return 'added'
+    return redirect(url_for('.love_artist', user_id=user[0].id))
 
 
 @bp.route('/<int:user_id>/love_artist/', methods=['GET'])
 @need_login
 def love_artist(user_id):
-    user = sesison.query(User)\
-           .options(contains_eager(User.love_artist))\
+    user = session.query(User)\
            .filter(User.id == user_id)\
            .all()
     return render_template('love_artist.html',
