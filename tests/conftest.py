@@ -4,6 +4,7 @@ from flask import _request_ctx_stack, g
 from sqlalchemy.orm import sessionmaker
 
 from dv.web.app import app
+from dv.web.login import get_token
 from dv.db import get_session, Base, get_engine
 from dv.album import Artist
 from dv.user import User
@@ -54,3 +55,8 @@ def f_user(f_session):
     f_session.add(user)
     f_session.commit()
     return user
+
+
+@fixture
+def f_token(f_user):
+    return get_token(f_user)

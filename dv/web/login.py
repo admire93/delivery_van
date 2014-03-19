@@ -3,14 +3,14 @@ from hashlib import sha256
 from datetime import datetime
 from functools import wraps
 
-from flask import current_app, json, g, abort, session as web_session
+from flask import current_app, json, g, abort, request, session as web_session
 
 from ..db import session
 from ..user import User
 
 
 def generate_checksum(payload):
-    secret = current_app.config['SECRET_KEY']
+    secret = current_app.config['SECRET_KEY'] or ''
     l = json.dumps(payload)
     return sha256(l + secret).hexdigest()
 

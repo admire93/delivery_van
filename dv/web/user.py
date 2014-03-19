@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint, url_for, g, render_template, abort, request
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import contains_eager
 from sqlalchemy.exc import IntegrityError
 
 from .login import need_login
@@ -49,11 +49,11 @@ def add_love_artist(user_id):
         session.add(artist)
     else:
         artist = a[0]
-    user.love_artists.add(artist)
-    session.add(user)
+    rel = LoveArtist(artist=artist, user=user[0])
+    session.add(rel)
     try:
         session.commit()
-    except IntegrityError:
+    except IntegrityError as e:
         session.rollback()
         abort(500)
     return 'added'
@@ -63,7 +63,8 @@ def add_love_artist(user_id):
 @need_login
 def love_artist(user_id):
     user = sesison.query(User)\
-           .options(joinedload(User.love_artist))\
+           .options(contains_eager(User.love_artist))\
            .filter(User.id == user_id)\
            .all()
-    return render_template('love_artist.html', love_artists=user.love_artists)
+    return render_template('love_artist.html',
+                           love_artists=user[0].love_artists)
