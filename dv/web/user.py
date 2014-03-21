@@ -6,7 +6,7 @@ from sqlalchemy.exc import IntegrityError
 
 from .login import need_login
 from ..user import User, LoveArtist
-from ..album import Artist
+from ..album import Artist, Album
 from ..db import session
 
 bp = Blueprint('user', __name__, template_folder='templates/user')
@@ -26,10 +26,17 @@ def user(user_id):
     if not user:
         abort(404)
     is_me = (user[0].id == g.current_user.id)
-    return render_template('index.html', user=user[0], me=is_me)
+    albums = session.query(Album)\
+             .join(LoveArtist, LoveArtist.artist_id == Album.artist_id)\
+             .filter(LoveArtist.user_id == user_id)\
+             .order_by(Album.created_at.desc())\
+             .limit(5)\
+             .all()
+    return render_template('index.html', user=user[0], me=is_me,
+                           love_albums=albums)
 
 
-@bp.route('/<int:user_id>/love_artist/', methods=['POST'])
+@bp.route('/<int:user_id>/love_artists/', methods=['POST'])
 @need_login
 def add_love_artist(user_id):
     user = session.query(User)\
@@ -66,7 +73,7 @@ def add_love_artist(user_id):
     return redirect(url_for('.love_artist', user_id=user[0].id))
 
 
-@bp.route('/<int:user_id>/love_artist/', methods=['GET'])
+@bp.route('/<int:user_id>/love_artists/', methods=['GET'])
 @need_login
 def love_artist(user_id):
     user = session.query(User)\
@@ -74,3 +81,13 @@ def love_artist(user_id):
            .all()
     return render_template('love_artist.html',
                            love_artists=user[0].love_artists)
+
+
+@bp.route('/<int:user_id>/love_albums/')
+def love_album(user_id):
+    albums = session.query(Album)\
+             .join(LoveArtist, LoveArtist.artist_id == Album.artist_id)\
+             .filter(LoveArtist.user_id == user_id)\
+             .order_by(Album.created_at.desc())\
+             .all()
+    return render_template('love_album.html', love_albums=albums)
