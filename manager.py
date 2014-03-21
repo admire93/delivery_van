@@ -1,7 +1,7 @@
 # -*- coding -*-: utf-8
 import os
 
-from flask.ext.script import Manager, prompt_bool
+from flask.ext.script import Manager, prompt_bool, Shell
 from alembic.command import revision as alembic_revision
 from alembic.command import upgrade as alembic_upgrade
 from alembic.command import downgrade as alembic_downgrade
@@ -9,7 +9,7 @@ from alembic.command import history as alembic_history
 from alembic.command import branches as alembic_branch
 from alembic.command import current as alembic_current
 
-from dv.db import get_alembic_config, get_engine, Base
+from dv.db import get_alembic_config, get_engine, Base, session
 from dv.web.app import app
 
 __all__ = 'manager', 'run'
@@ -72,7 +72,13 @@ def current():
     return alembic_current(config)
 
 
+def _make_context():
+    return dict(app=app, session=session)
+
+
+manager.add_command("shell", Shell(make_context=_make_context))
 manager.add_option('-c', '--config', dest='config', required=True)
+
 
 if __name__ == '__main__':
     manager.run()
