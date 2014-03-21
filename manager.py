@@ -1,6 +1,8 @@
 # -*- coding -*-: utf-8
 import os
 
+from datetime import datetime
+
 from flask.ext.script import Manager, prompt_bool, Shell
 from alembic.command import revision as alembic_revision
 from alembic.command import upgrade as alembic_upgrade
@@ -70,6 +72,21 @@ def current():
     engine = get_engine()
     config, _ = get_alembic_config(engine)
     return alembic_current(config)
+
+
+@manager.command
+def crawl():
+    from dv.periodic import do, save_albums
+    from dv.bugs import BugsRecentAlbum
+    def anon():
+        bugs = BugsRecentAlbum()
+        try:
+            print 'Saved!'
+            save_albums(bugs.newest)
+        except Exception as e:
+            with open('error.log', 'a') as f:
+                f.write('error --- %s at %s' %  (e.message, datetime.now()))
+    do(anon, 86400)
 
 
 def _make_context():

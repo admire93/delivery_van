@@ -20,6 +20,12 @@ def save_albums(bugs_newest):
             session.add(artist)
         else:
             artist = artists[0]
+            album = session.query(Album)\
+                    .filter(Album.artist_id == artist.id)\
+                    .filter(Album.name == bugs['album_name'])\
+                    .all()
+            if album:
+                return None
         album = Album(artist=artist,
                       name=bugs['album_name'],
                       link=bugs['album_link'],
