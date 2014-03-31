@@ -1,16 +1,16 @@
 {% macro albums(albums) -%}
-<table>
+<table id="albums">
   <thead>
     <tr>
       <th>커버</th>
       <th>앨범 이름</th>
-      <th>앨범 출시일</th>
+      <th>가수</th>
     </tr>
   </thead>
   <tbody>
       {% for album in albums -%}
         <tr>
-          <td>
+          <td class="album-thumbnail">
             {% if album.cover -%}
               <a href="{{ album.link }}"><img src="{{ album.cover }}" /></a>
             {%- endif %}
@@ -22,7 +22,7 @@
               {{ album.name }}
             {%- endif %}
           </td>
-          <td>{{ album.created_at }}</td>
+          <td class="artist-name">{{ album.artist.name }}</td>
         </tr>
       {%- endfor %}
   </tbody>

@@ -1,0 +1,11 @@
+#albums thead { display: none; }
+#albums tbody td { padding: 15px 10px; }
+#albums tbody .album-thumbnail {
+  width: 50px; height: 50px;
+  margin:0; padding:0;
+}
+#albums tbody .album-thumbnail img { width: 50px; height: 50px; }
+#albums tbody a { color: #83b5a9; font-size: 1.2em;}
+#albums tbody .artist-name { font-size: 1.5em; color: #888; font-weight: bold; }
+
+#albums tbody tr:hover { background-color: #eee; }

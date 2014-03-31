@@ -1,0 +1,8 @@
+{% macro import_static(type_, p) -%}
+  {% if type_ == 'css' -%}
+    <link rel="stylesheet" href="{{ url_for('static', filename=p) }}" />
+  {% elif type_ == 'js' -%}
+    <script type="text/javascript" src="{{ url_for('static', filename=p) }}">
+    </script>
+  {%- endif %}
+{%- endmacro %}

@@ -1,8 +1,11 @@
+{% from 'util.html' import import_static %}
 <!DOCTYPE html>
 <html>
   <head>
     <title>{% block htmltitle %}{% endblock %}</title>
     <meta http-equiv="Content-Type" content-type="text/html;charset=utf-8" />
+    {{ import_static('css', 'bootstrap/dist/css/bootstrap.css') }}
+    {{ import_static('css', 'albums.css') }}
     {% block htmlhead %}
     {% endblock %}
   </head>
@@ -14,5 +17,7 @@
     </ul>
     {% block htmlbody %}
     {% endblock %}
+    {{ import_static('js', 'jquery/dist/js/jquery.min.js') }}
+    {{ import_static('js', 'bootstrap/dist/js/bootstrap.min.js') }}
   </body>
 </html>
