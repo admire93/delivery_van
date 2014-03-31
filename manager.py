@@ -79,14 +79,15 @@ def crawl():
     from dv.periodic import do, save_albums
     from dv.bugs import BugsRecentAlbum
     def anon():
-        bugs = BugsRecentAlbum()
-        try:
-            print 'Saved!'
-            save_albums(bugs.newest)
-        except Exception as e:
-            with open('error.log', 'a') as f:
-                f.write('error --- %s at %s' %  (e.message, datetime.now()))
-    do(anon, 86400)
+        with app.app_context():
+            bugs = BugsRecentAlbum()
+            try:
+                print 'Saved!'
+                save_albums(bugs.newest)
+            except Exception as e:
+                with open('error.log', 'a') as f:
+                    f.write('error --- %s at %s\n' %  (e.message, datetime.now()))
+    do(anon, 43200)
 
 
 def _make_context():
