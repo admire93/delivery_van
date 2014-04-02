@@ -4,7 +4,7 @@
   <head>
     <title>{% block htmltitle %}{% endblock %}</title>
     <meta http-equiv="Content-Type" content-type="text/html;charset=utf-8" />
-    {{ import_static('css', 'bootstrap/dist/css/bootstrap.css') }}
+    {{ import_bower('css', 'bootstrap/dist/css/bootstrap.css') }}
     {{ import_static('css', 'albums.css') }}
     {% block htmlhead %}
     {% endblock %}
@@ -17,7 +17,7 @@
     </ul>
     {% block htmlbody %}
     {% endblock %}
-    {{ import_static('js', 'jquery/dist/js/jquery.min.js') }}
-    {{ import_static('js', 'bootstrap/dist/js/bootstrap.min.js') }}
+    {{ import_bower('js', 'jquery/dist/js/jquery.min.js') }}
+    {{ import_bower('js', 'bootstrap/dist/js/bootstrap.min.js') }}
   </body>
 </html>
