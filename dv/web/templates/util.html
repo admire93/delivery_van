@@ -8,7 +8,7 @@
 {%- endmacro %}
 
 {% macro import_bower(type_, p_) -%}
-  {% set p = '/components%s' % p_ -%}
+  {% set p = '/components/%s' % p_ -%}
   {% if type_ == 'css' -%}
     <link rel="stylesheet" href="{{ url_for('static', filename=p) }}" />
   {% elif type_ == 'js' -%}
