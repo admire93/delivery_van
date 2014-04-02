@@ -1,3 +1,5 @@
+#albums { width: 100%; }
+#albums tr { width: 100%; }
 #albums thead { display: none; }
 #albums tbody td { padding: 15px 10px; }
 #albums tbody .album-thumbnail {
