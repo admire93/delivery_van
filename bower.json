@@ -1,9 +1,12 @@
 {
-  "name": "dv",
+  "name": "delivery_van",
   "version": "0.0.0",
   "homepage": "https://github.com/admire93/delivery_van",
   "authors": [
-    "Kang Hyojun <admire9@gmail.com>"
+    "Kang HyoJun <admire9@gmail.com>"
+  ],
+  "moduleType": [
+    "global"
   ],
   "license": "MIT",
   "private": true,
@@ -11,7 +14,12 @@
     "**/.*",
     "node_modules",
     "bower_components",
+    "./dv/web/static/components/",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "jquery": "~2.1.0",
+    "bootstrap": "~3.1.1"
+  }
 }

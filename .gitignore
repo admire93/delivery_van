@@ -42,3 +42,5 @@ nosetests.xml
 
 # sqlite db files
 *.db
+
+dv/web/static/components/*
