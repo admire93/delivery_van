@@ -82,7 +82,7 @@ def crawl():
         with app.app_context():
             bugs = BugsRecentAlbum()
             try:
-                print 'Saved!'
+                print 'Saved!', datetime.now()
                 save_albums(bugs.newest)
             except Exception as e:
                 with open('error.log', 'a') as f:
