@@ -19,10 +19,8 @@ class User(Base):
 
     fb_id = Column(Unicode, nullable=False)
 
-    love_artists = relationship('LoveArtist',
-                                primaryjoin='User.id==LoveArtist.user_id',
-                                secondary='artists',
-                                secondaryjoin='Artist.id==LoveArtist.artist_id')
+    love_artists = relationship('Artist',
+                                secondary='love_artists')
 
     created_at = Column(DateTime(timezone=True), default=datetime.now(),
                         nullable=False)
