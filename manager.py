@@ -18,6 +18,7 @@ __all__ = 'manager', 'run'
 
 @Manager
 def manager(config=None):
+    assert config, "Configuration need!"
     config = os.path.abspath(config)
     app.config.from_pyfile(config)
     assert 'DATABASE_URL' in app.config, 'DATABASE_URL missing in config.'
@@ -95,7 +96,7 @@ def _make_context():
 
 
 manager.add_command("shell", Shell(make_context=_make_context))
-manager.add_option('-c', '--config', dest='config', required=True)
+manager.add_option('-c', '--config', dest='config', required=False)
 
 
 if __name__ == '__main__':
