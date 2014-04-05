@@ -83,6 +83,26 @@ def love_artist(user_id):
                            love_artists=user[0].love_artists)
 
 
+@bp.route('/<int:user_id>/love_artists/<int:artist_id>/', methods=['POST'])
+@need_login
+def do_love_artist(user_id, artist_id):
+    if g.current_user.id != user_id:
+        abort(403)
+    artist = session.query(Artist)\
+             .filter(Artist.id == artist_id)\
+             .all()
+    if artist:
+        g.current_user.love_artists.append(artist[0])
+        session.add(g.current_user)
+        try:
+            session.commit()
+        except IntegrityError:
+            session.rollback()
+            abort(500)
+    # TODO: 아티스트 페이지로 다시 보내주기 (referer)
+    return redirect(url_for('user.me'))
+
+
 @bp.route('/<int:user_id>/love_albums/')
 def love_album(user_id):
     albums = session.query(Album)\

@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-from flask import Blueprint, request, render_template
+from flask import Blueprint, request, render_template, g
 
 from ..album import Artist
 from ..db import session
+from .login import is_logined
 
 bp = Blueprint('artist', __name__, template_folder='templates/artist')
 
@@ -11,24 +12,6 @@ bp = Blueprint('artist', __name__, template_folder='templates/artist')
 def all():
     artists = session.query(Artist)\
               .all()
-    return render_template('all.html', artists=artists)
-
-
-@bp.route('/', methods=['POST'])
-def add():
-    name = request.form.get('name', None)
-    if not name:
-        abort(400)
-    artist = session.query(Artist)\
-             .filter(Artist.name == name)\
-             .all()
-    if not artist:
-        artist = Artist(name=name)
-        session.add(artist)
-        try:
-            session.commit()
-            return '201 added'
-        except IntigrityError:
-            session.rollback()
-            abort(500)
-    return '200 added'
+    print artists[0].first_album
+    return render_template('all_artist.html', artists=artists,
+                           me=is_logined())

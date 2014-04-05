@@ -33,13 +33,23 @@ class Album(Base):
 
 class Artist(Base):
 
+    __tablename__ = 'artists'
+
     id = Column(Integer, primary_key=True)
 
     name = Column(UnicodeText, nullable=False)
 
     link = Column(Unicode)
 
+    albums = relationship('Album', order_by="desc(Album.created_at)",
+                          lazy='dynamic')
+
     created_at = Column(DateTime(timezone=True), default=datetime.now(),
                         nullable=False)
 
-    __tablename__ = 'artists'
+    @property
+    def first_album(self):
+        albums = self.albums.limit(1).all()
+        if not albums:
+            return None
+        return albums[0]

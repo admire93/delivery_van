@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block htmlbody %}
+<table id="artists" border="0">
+  <thead>
+    <tr>
+      <th>커버</th>
+      <th>가수</th>
+      <th>관심 등록</th>
+    </tr>
+  </thead>
+  <tbody>
+      {% for artist in artists -%}
+        <tr>
+          <td class="album-thumbnail">
+            {% set album = artist.first_album %}
+            {% if album.cover -%}
+              <a href="{{ album.link }}"><img src="{{ album.cover }}" /></a>
+            {%- endif %}
+          </td>
+          <td class="artist-name">{{ artist.name }}</td>
+          <td>
+            {% if me -%}
+              <form action="{{ url_for('user.do_love_artist',
+                                       user_id=me.id, artist_id=artist.id) }}"
+                    method="POST">
+                <button class="btn btn-large">
+                  +
+                </button>
+              </form>
+            {%- endif %}
+          </td>
+        </tr>
+      {%- endfor %}
+  </tbody>
+</table>
+{% endblock %}
