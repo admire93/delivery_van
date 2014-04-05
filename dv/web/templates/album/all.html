@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% from 'albums.html' import albums %}
+
+{% block htmlbody %}
+  {{ albums(albums_) }}
+{% endblock %}
