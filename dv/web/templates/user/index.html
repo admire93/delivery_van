@@ -13,18 +13,25 @@
       <input type="submit" value="추가하기">
     </form>
   {%- endif %}
-  <ul>
-    <li>
+
+  <dl id="love-badge">
+    <dt>
       <a href="{{ url_for('.love_artist', user_id=user.id) }}">
-      {{ user.name }} 님이 관심있어하는 아티스트들
+        {{ user.name }} 님이 관심있어하는 아티스트들
       </a>
-    </li>
-    <li>
+    </dt>
+    <dd>
+      {{ user.love_artists|length }}
+    </dd>
+    <dt>
       <a href="{{ url_for('.love_album', user_id=user.id) }}">
-      {{ user.name }} 님이 관심있어하는 아티스트들의 앨범
+        {{ user.name }} 님이 관심있어하는 아티스트들의 앨범
       </a>
-    </li>
-  </ul>
+    </dt>
+    <dd>
+      {{ user.love_artists|length }}+
+    </dd>
+  </dl>
 
   {{ albums(love_albums) }}
 {% endblock %}

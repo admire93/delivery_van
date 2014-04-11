@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import (Blueprint, url_for, g, render_template, abort, request,
                    redirect)
-from sqlalchemy.orm import contains_eager
+from sqlalchemy.orm import joinedload
 from sqlalchemy.exc import IntegrityError
 
 from .login import need_login
@@ -21,6 +21,7 @@ def me():
 @need_login
 def user(user_id):
     user = session.query(User)\
+           .options(joinedload(User.love_artists))\
            .filter(User.id == user_id)\
            .all()
     if not user:
