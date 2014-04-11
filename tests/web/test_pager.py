@@ -6,11 +6,11 @@ def norm_list(p):
     return map(lambda x: x[0], p)
 
 def test_small_pager():
-    assert [1, 2, 3] == norm_list(pager(1, 16, 5))
+    assert [1, 2, 3] == norm_list(pager(1, 15, 5))
 
 
 def test_small2_pager():
-    assert [1, 2, 3, 4, 5] == norm_list(pager(1, 27, 5))
+    assert [1, 2, 3, 4, 5] == norm_list(pager(1, 25, 5))
 
 
 def test_mid_pager():
