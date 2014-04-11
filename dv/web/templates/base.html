@@ -12,22 +12,32 @@
     {% endblock %}
   </head>
   <body>
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-      <div class="container">
-        <ul class="nav navbar-nav">
-          <li id="nav-artists">
-            <a href="{{ url_for('artist.all') }}">
-              아티스트
-            </a>
-          </li>
+    <nav>
+      <ul>
+        <li id="nav-artists">
+          <a href="{{ url_for('artist.all') }}">
+            아티스트
+          </a>
+        </li>
 
-          <li id="nav-artists">
-            <a href="{{ url_for('album.all') }}">
-              앨범
+        <li id="nav-artists">
+          <a href="{{ url_for('album.all') }}">
+            앨범
+          </a>
+        </li>
+        <li id="btn-profile">
+          {% if True -%}
+            <a href="#settings" class="btn-setting">
+              <span class="btn glyphicon glyphicon-cog"></span>
             </a>
-          </li>
-        </ul>
-      </div>
+            <a href="{{ url_for('user.me') }}" class="me"> 누구누구님 </a>
+          {% else -%}
+            <a href="{{ url_for('facebook_login.login') }}">
+              로그인
+            </a>
+          {%- endif %}
+        </li>
+      </ul>
     </nav>
 
     <div id="wrap">

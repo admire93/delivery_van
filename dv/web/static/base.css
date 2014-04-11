@@ -1,2 +1,17 @@
-#wrap { margin-top: 60px; }
-nav { font-size: 1.5em; font-weight: bold; }
+#wrap { clear: left; }
+
+/* navigation */
+nav {
+  width: 100%;
+  font-size: 1.5em; font-weight: bold;
+  position:relative;
+  top: 0;
+  padding: 20px 0;
+  border-bottom: solid 1px #eee;
+  margin-bottom: 20px;
+  float: left; }
+
+nav ul { width: 100%; list-style: none; float: left; }
+nav ul li { width: 200px; float: left; }
+
+nav ul #btn-profile { float: right; }

@@ -2,18 +2,6 @@
 {% from 'albums.html' import albums %}
 
 {% block htmlbody %}
-  <h1> Hello {{ user.name }} </h1>
-  {% if me -%}
-  <form method="POST"
-        action="{{ url_for('.add_love_artist', user_id=user.id) }}">
-      <div>
-        <legend>관심있는 아티스트 이름</legend>
-        <input type="name" name="artist_name">
-      </div>
-      <input type="submit" value="추가하기">
-    </form>
-  {%- endif %}
-
   <dl id="love-badge">
     <dt>
       <a href="{{ url_for('.love_artist', user_id=user.id) }}">
