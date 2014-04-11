@@ -27,14 +27,14 @@ def user(user_id):
     if not user:
         abort(404)
     is_me = (user[0].id == g.current_user.id)
-    albums = session.query(Album)\
-             .join(LoveArtist, LoveArtist.artist_id == Album.artist_id)\
-             .filter(LoveArtist.user_id == user_id)\
-             .order_by(Album.created_at.desc())\
-             .limit(5)\
-             .all()
+    album_query = session.query(Album)\
+                  .join(LoveArtist, LoveArtist.artist_id == Album.artist_id)\
+                  .filter(LoveArtist.user_id == user_id)\
+                  .order_by(LoveArtist.created_at.asc())
+    albums = album_query.limit(20).all()
+    albums_count = album_query.count()
     return render_template('index.html', user=user[0], me=is_me,
-                           love_albums=albums)
+                           love_albums=albums, love_album_count=albums_count)
 
 
 @bp.route('/<int:user_id>/love_artists/', methods=['POST'])

@@ -5,7 +5,7 @@
   <dl id="love-badge">
     <dt>
       <a href="{{ url_for('.love_artist', user_id=user.id) }}">
-        {{ user.name }} 님이 관심있어하는 아티스트들
+       관심 아티스트
       </a>
     </dt>
     <dd>
@@ -13,11 +13,11 @@
     </dd>
     <dt>
       <a href="{{ url_for('.love_album', user_id=user.id) }}">
-        {{ user.name }} 님이 관심있어하는 아티스트들의 앨범
+        관심 앨범
       </a>
     </dt>
     <dd>
-      {{ user.love_artists|length }}+
+      {{ love_album_count }}
     </dd>
   </dl>
 
