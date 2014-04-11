@@ -112,3 +112,11 @@ def love_album(user_id):
              .order_by(Album.created_at.desc())\
              .all()
     return render_template('love_album.html', love_albums=albums)
+
+
+@bp.route('/<int:user_id>/settings/', methods=['GET'])
+@need_login
+def setting(user_id):
+    if g.current_user.id != user_id:
+        abort(403)
+    return 'setting page, working on it!'

@@ -16,6 +16,14 @@ app.register_blueprint(album.bp, url_prefix='/albums')
 
 oauth.init_app(app)
 
+
+@app.template_filter('is_login')
+def template_login(s):
+    if s is None:
+        return is_logined()
+    return s
+
+
 @app.route('/', methods=['GET'])
 def home():
     user = is_logined()

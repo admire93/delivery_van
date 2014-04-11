@@ -26,11 +26,16 @@
           </a>
         </li>
         <li id="btn-profile">
-          {% if True -%}
-            <a href="#settings" class="btn-setting">
+          {% set login_user = None|is_login %}
+
+          {% if login_user -%}
+          <a href="{{ url_for('user.setting', user_id=login_user.id) }}"
+             class="btn-setting">
               <span class="btn glyphicon glyphicon-cog"></span>
             </a>
-            <a href="{{ url_for('user.me') }}" class="me"> 누구누구님 </a>
+            <a href="{{ url_for('user.me') }}" class="me">
+              {{ login_user.name }}님
+            </a>
           {% else -%}
             <a href="{{ url_for('facebook_login.login') }}">
               로그인
