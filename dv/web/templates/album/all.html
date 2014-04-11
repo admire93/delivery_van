@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% from 'albums.html' import albums %}
+{% from 'util.html' import show_pager %}
 
 {% block htmlbody %}
   {{ albums(albums_) }}
+  {{ show_pager(url_for('album.all'), pages) }}
 {% endblock %}
