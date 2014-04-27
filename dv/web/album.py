@@ -11,10 +11,13 @@ bp = Blueprint('album', __name__, template_folder='templates/album')
 @bp.route('/', methods=['GET'])
 def all():
     page = request.args.get('page', 1, type=int)
+    name = request.args.get('name', u'', type=unicode)
     PAGE_PER_ARTIST = 15
     o = (page - 1) * PAGE_PER_ARTIST
     q = session.query(Album)\
         .order_by(Album.created_at)
+    if name:
+        q = q.filter(Album.name.ilike(u'%{0}%'.format(name)))
     albums = q.offset(o)\
               .limit(PAGE_PER_ARTIST)\
               .all()

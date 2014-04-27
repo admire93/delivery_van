@@ -3,6 +3,12 @@
 {% from 'util.html' import show_pager %}
 
 {% block htmlbody %}
+  <form method="GET" action="{{ url_for('.all') }}">
+    <input type="search" placeholder="앨범 이름입력해주세요." name="name" />
+    <button>
+      검색
+    </button>
+  </form>
   {{ albums(albums_) }}
   {{ show_pager(url_for('album.all'), pages) }}
 {% endblock %}
