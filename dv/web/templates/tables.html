@@ -1,0 +1,83 @@
+{% from 'util.html' import show_pager %}
+
+{% macro dv_table(id, theads) -%}
+<table id="{{ id }}" border="0" class="dv-table">
+  <thead>
+    <tr>
+      {% for header in theads: -%}
+        <th>{{ header }}</th>
+      {%- endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {{ caller() }}
+  </tbody>
+</table>
+{%- endmacro %}
+
+{% macro albums(albums, pages) -%}
+  <form method="GET" action="{{ url_for('.all') }}">
+    <input type="search" placeholder="앨범 이름입력해주세요." name="name" />
+    <button>
+      검색
+    </button>
+  </form>
+
+  {% call dv_table('albums', ('커버', '앨범 이름', '가수')) %}
+    {% for album in albums -%}
+      <tr>
+        <td class="album-thumbnail">
+          {% if album.cover -%}
+            <a href="{{ album.link }}"><img src="{{ album.cover }}" /></a>
+          {%- endif %}
+        </td>
+        <td>
+          {% if album.link -%}
+            <a href="{{ album.link }}">{{ album.name }}</a>
+          {% else %}
+            {{ album.name }}
+          {%- endif %}
+        </td>
+        <td class="artist-name">{{ album.artist.name }}</td>
+      </tr>
+    {%- endfor %}
+  {% endcall %}
+
+  {{ show_pager(url_for('album.all'), pages) }}
+{%- endmacro %}
+
+{% macro artists(artists, pages) -%}
+  <form method="GET" action="{{ url_for('.all') }}">
+    <input type="search" placeholder="앨범 이름입력해주세요." name="name" />
+    <button>
+      검색
+    </button>
+  </form>
+
+  {% call dv_table('artists', ('커버', '가수', '관심 등록')) -%}
+    {% for artist in artists -%}
+      <tr>
+        <td class="album-thumbnail">
+          {% set album = artist.first_album %}
+          {% if album.cover -%}
+            <a href="{{ album.link }}"><img src="{{ album.cover }}" /></a>
+          {%- endif %}
+        </td>
+        <td class="artist-name">{{ artist.name }}</td>
+        <td>
+          {% if me -%}
+            <form action="{{ url_for('user.do_love_artist',
+                                     user_id=me.id, artist_id=artist.id) }}"
+                  method="POST">
+              <button class="btn btn-large">
+                +
+              </button>
+            </form>
+          {%- endif %}
+        </td>
+      </tr>
+    {%- endfor %}
+  {%- endcall %}
+
+  {{ show_pager(url_for('artist.all'), pages) }}
+{%- endmacro %}
