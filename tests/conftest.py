@@ -6,7 +6,7 @@ from sqlalchemy.orm import sessionmaker
 from dv.web.app import app
 from dv.web.login import get_token
 from dv.db import get_session, Base, get_engine
-from dv.album import Artist
+from dv.album import Artist, Album
 from dv.user import User
 
 
@@ -43,7 +43,7 @@ def f_page():
 
 @fixture
 def f_artist(f_session):
-    damien = Artist(name='Damien Rice')
+    damien = Artist(name=u'Damien Rice')
     f_session.add(damien)
     f_session.commit()
     return damien
@@ -51,7 +51,7 @@ def f_artist(f_session):
 
 @fixture
 def f_user(f_session):
-    user = User(name='me', fb_id='102000001')
+    user = User(name=u'me', fb_id='102000001')
     f_session.add(user)
     f_session.commit()
     return user
@@ -60,3 +60,11 @@ def f_user(f_session):
 @fixture
 def f_token(f_user):
     return get_token(f_user)
+
+
+@fixture
+def f_album(f_session, f_artist):
+    oanbisde = Album(name=u'O & B-Side', artist=f_artist)
+    f_session.add(oanbisde)
+    f_session.commit()
+    return oanbisde

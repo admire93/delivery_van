@@ -12,6 +12,8 @@ __all__ = 'Album', 'Artist',
 
 
 class Album(Base):
+    """ 새로나오는 앨범들
+    """
 
     id = Column(Integer, primary_key=True)
 
@@ -32,6 +34,8 @@ class Album(Base):
 
 
 class Artist(Base):
+    """ 앨범에 적힌 아티스트
+    """
 
     __tablename__ = 'artists'
 
