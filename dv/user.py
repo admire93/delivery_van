@@ -43,8 +43,14 @@ class User(Base):
                             .all()
             if latest_albums:
                 id = latest_albums[0].id
-        ra = ReadAlbum(user=self, album_id=id)
-        session.add(ra)
+        if self.latest_readed_album:
+            ra = session.query(ReadAlbum)\
+                 .filter(ReadAlbum.user_id == self.id)\
+                 .one()
+            ra.album_id = id
+        else:
+            ra = ReadAlbum(user=self, album_id=id)
+            session.add(ra)
         if commit:
             session.commit()
 
