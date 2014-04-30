@@ -4,7 +4,7 @@ from flask import (Blueprint, url_for, g, render_template, abort, request,
 from sqlalchemy.orm import joinedload
 from sqlalchemy.exc import IntegrityError
 
-from .login import need_login
+from .login import need_login, is_logined
 from ..user import User, LoveArtist
 from ..album import Artist, Album
 from ..db import session
@@ -111,7 +111,13 @@ def love_album(user_id):
              .filter(LoveArtist.user_id == user_id)\
              .order_by(Album.created_at.desc())\
              .all()
-    return render_template('love_album.html', love_albums=albums)
+    logined = is_logined()
+    readed_album = None
+    if logined and logined.id == user_id:
+        readed_album = logined.latest_readed_album
+        logined.read_album(albums[0].id)
+    return render_template('love_album.html', love_albums=albums,
+                           latest_readed_album=readed_album)
 
 
 @bp.route('/<int:user_id>/settings/', methods=['GET'])
