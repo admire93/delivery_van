@@ -1,4 +1,4 @@
-{% macro albums(albums) -%}
+{% macro albums(albums, read_index=0) -%}
 <table id="albums" border="0">
   <thead>
     <tr>
@@ -22,7 +22,12 @@
               {{ album.name }}
             {%- endif %}
           </td>
-          <td class="artist-name">{{ album.artist.name }}</td>
+          <td class="artist-name">
+            {{ album.artist.name }}
+            {% if album.id > read_index -%}
+              &nbsp; new!
+            {%- endif %}
+          </td>
         </tr>
       {%- endfor %}
   </tbody>

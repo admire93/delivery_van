@@ -33,8 +33,13 @@ def user(user_id):
                   .order_by(LoveArtist.created_at.asc())
     albums = album_query.limit(20).all()
     albums_count = album_query.count()
+    readed = 0
+    if is_me:
+        readed = user[0].latest_readed_album
+        user[0].read_album(albums[0].id)
     return render_template('index.html', user=user[0], me=is_me,
-                           love_albums=albums, love_album_count=albums_count)
+                           love_albums=albums, love_album_count=albums_count,
+                           readed=readed)
 
 
 @bp.route('/<int:user_id>/love_artists/', methods=['POST'])
