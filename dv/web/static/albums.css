@@ -1,12 +1,12 @@
-#albums { width: 90%; margin: 0 auto; }
-#albums tr { width: 100%; height: 90px;}
-#albums thead { display: none; }
-#albums tbody tr td { padding-left: 10px; }
-#albums tbody .album-thumbnail { width: 70px; height: 70px; }
-#albums tbody .album-thumbnail img { width: 70px; height: 70px; }
-#albums tbody a { color: #83b5a9; font-size: 1.5em;}
-#albums tbody .artist-name {
+.dv-table { width: 90%; margin: 0 auto; }
+.dv-table tr { width: 100%; height: 90px;}
+.dv-table thead { display: none; }
+.dv-table tbody tr td { padding-left: 10px; }
+.dv-table tbody a { color: #83b5a9; font-size: 1.5em;}
+.dv-table tbody .artist-name {
   font-size: 2em; color: #888; font-weight: bold;
 }
+.dv-table tbody tr:hover { background-color: #eee; }
 
-#albums tbody tr:hover { background-color: #eee; }
+#albums tbody .album-thumbnail { width: 70px; height: 70px; }
+#albums tbody .album-thumbnail img { width: 70px; height: 70px; }
