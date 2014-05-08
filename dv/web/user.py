@@ -130,4 +130,5 @@ def love_album(user_id):
 def setting(user_id):
     if g.current_user.id != user_id:
         abort(403)
-    return 'setting page, working on it!'
+    return render_template('setting.html',
+                           love_artists=g.current_user.love_artists)
