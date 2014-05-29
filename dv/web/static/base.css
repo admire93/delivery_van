@@ -35,3 +35,28 @@ nav ul #btn-profile { float: right; }
 .dv-pager li:last-child::before {
   content: "…";
 }
+
+.table-search {
+  width: 80%; height: 50px;
+  margin: 0 auto;
+}
+
+.table-search input:focus {
+  outline-width: 0;
+}
+
+.table-search input {
+  width: 75%; height: 40px;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-bottom: solid 1px #888;
+  padding-left: 20px;
+}
+
+.table-search button {
+  border: none;
+  color: #fff;
+  font-size: 1.5em;
+  background: #83b5a9;
+}
