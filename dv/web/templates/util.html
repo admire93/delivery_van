@@ -19,7 +19,7 @@
 
 
 {% macro show_pager(url_path, pages) -%}
-  <ul>
+  <ul class="dv-pager">
     {% for num, pos in pages: -%}
       {% if pos == 'c' -%}
         <li class="current">
