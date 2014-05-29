@@ -5,6 +5,7 @@ from sqlalchemy.orm import joinedload
 from sqlalchemy.exc import IntegrityError
 
 from .login import need_login, is_logined
+from .util import pager, bind_page
 from ..user import User, LoveArtist
 from ..album import Artist, Album
 from ..db import session
@@ -39,7 +40,8 @@ def user(user_id):
         user[0].read_album(albums[0].id)
     return render_template('index.html', user=user[0], me=is_me,
                            love_albums=albums, love_album_count=albums_count,
-                           readed=readed)
+                           readed=readed,
+                           pages=[])
 
 
 @bp.route('/<int:user_id>/love_artists/', methods=['POST'])
@@ -111,10 +113,13 @@ def do_love_artist(user_id, artist_id):
 
 @bp.route('/<int:user_id>/love_albums/')
 def love_album(user_id):
-    albums = session.query(Album)\
-             .join(LoveArtist, LoveArtist.artist_id == Album.artist_id)\
-             .filter(LoveArtist.user_id == user_id)\
-             .order_by(Album.created_at.desc())\
+    page, offset, limit = bind_page()
+    q = session.query(Album)\
+        .join(LoveArtist, LoveArtist.artist_id == Album.artist_id)\
+        .filter(LoveArtist.user_id == user_id)\
+        .order_by(Album.created_at.desc())
+    albums = q.offset(offset)\
+             .limit(limit)\
              .all()
     logined = is_logined()
     readed_album = None
@@ -122,7 +127,8 @@ def love_album(user_id):
         readed_album = logined.latest_readed_album
         logined.read_album(albums[0].id)
     return render_template('love_album.html', love_albums=albums,
-                           latest_readed_album=readed_album)
+                           latest_readed_album=readed_album,
+                           pager=pager(page, q.count(), limit))
 
 
 @bp.route('/<int:user_id>/settings/', methods=['GET'])

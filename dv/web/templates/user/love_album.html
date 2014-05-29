@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
-{% from 'albums.html' import albums %}
+{% from 'tables.html' import albums %}
 
 {% block htmlhead %}
 {% endblock %}
 
 {% block htmlbody %}
-  {{ albums(love_albums) }}
+  {{ albums(love_albums, pager) }}
 {% endblock %}

@@ -16,7 +16,7 @@
 {%- endmacro %}
 
 {% macro albums(albums, pages) -%}
-  <form method="GET" action="{{ url_for('.all') }}">
+  <form method="GET" action="{{ url_for('album.all') }}">
     <input type="search" placeholder="앨범 이름입력해주세요." name="name" />
     <button>
       검색
