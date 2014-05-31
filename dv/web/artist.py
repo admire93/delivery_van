@@ -2,6 +2,7 @@
 from flask import Blueprint, request, render_template, g
 
 from ..album import Artist
+from ..user import User
 from ..db import session
 from .login import is_logined
 from .util import pager

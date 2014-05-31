@@ -51,7 +51,7 @@
   {{ show_pager(url_for('album.all'), pages) }}
 {%- endmacro %}
 
-{% macro artists(artists, pages, search=True) -%}
+{% macro artists(artists, pages, search=True, me=None) -%}
   {% if search -%}
     <form method="GET"
           action="{{ url_for('artist.all')  }}"
@@ -80,7 +80,7 @@
                                      user_id=me.id, artist_id=artist.id) }}"
                   method="POST">
               <button class="btn btn-large">
-                +
+                <span class="glyphicon glyphicon-heart"></span>
               </button>
             </form>
           {%- endif %}
