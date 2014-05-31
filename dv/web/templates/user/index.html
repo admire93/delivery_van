@@ -3,23 +3,31 @@
 
 {% block htmlbody %}
   <dl id="love-badge">
-    <dt>
-      <a href="{{ url_for('.love_artist', user_id=user.id) }}">
-       관심 아티스트
-      </a>
-    </dt>
-    <dd>
-      {{ user.love_artists|length }}
-    </dd>
-    <dt>
-      <a href="{{ url_for('.love_album', user_id=user.id) }}">
-        관심 앨범
-      </a>
-    </dt>
-    <dd>
-      {{ love_album_count }}
-    </dd>
-  </dl>
+    <div class="love-box">
+      <dt>
+        <a href="{{ url_for('.love_artist', user_id=user.id) }}">
+         관심 아티스트
+        </a>
+      </dt>
+      <dd>
+        {{ user.love_artists|length }}
+      </dd>
+    </div>
 
-  {{ albums(love_albums, pages) }}
+    <div class="love-box">
+      <dt>
+        <a href="{{ url_for('.love_album', user_id=user.id) }}">
+          관심 앨범
+        </a>
+      </dt>
+      <dd>
+        {{ love_album_count }}
+      </dd>
+    </div>
+  </dl>
+  {% set n = 20 if love_album_count > 20 else love_album_count %}
+  <h1 class="user-head">
+    {% if me %} 회원{% else %} {{ user.name }}{% endif %}님이 최근 관심 있어한 {{ n }}개의 앨범입니다. </h1>
+
+  {{ albums(love_albums, pages, False) }}
 {% endblock %}

@@ -84,11 +84,21 @@ def add_love_artist(user_id):
 @bp.route('/<int:user_id>/love_artists/', methods=['GET'])
 @need_login
 def love_artist(user_id):
+    page, offset, limit = bind_page()
     user = session.query(User)\
            .filter(User.id == user_id)\
            .all()
+    if not user:
+        abort(404)
+    love_artists = user[0].love_artist_query\
+                   .offset(offset)\
+                   .limit(limit)\
+                   .all()
     return render_template('love_artist.html',
-                           love_artists=user[0].love_artists)
+                           love_artists=love_artists,
+                           pager=pager(page,
+                                       user[0].love_artist_query.count(),
+                                       limit))
 
 
 @bp.route('/<int:user_id>/love_artists/<int:artist_id>/', methods=['POST'])

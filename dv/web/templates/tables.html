@@ -15,14 +15,18 @@
 </table>
 {%- endmacro %}
 
-{% macro albums(albums, pages) -%}
-  <form method="GET" action="{{ url_for('album.all') }}" class="table-search">
-    <input type="search" placeholder="앨범 이름입력해주세요." name="name" />
-    <button>
-      <span class="glyphicon glyphicon-search"></span>
-      검색
-    </button>
-  </form>
+{% macro albums(albums, pages, search=True) -%}
+  {% if search -%}
+  <form method="GET"
+        action="{{ url_for('album.all') }}"
+        class="table-search">
+      <input type="search" placeholder="앨범 이름입력해주세요." name="name" />
+      <button>
+        <span class="glyphicon glyphicon-search"></span>
+        검색
+      </button>
+    </form>
+  {%- endif %}
 
   {% call dv_table('albums', ('커버', '앨범 이름', '가수')) %}
     {% for album in albums -%}
@@ -47,14 +51,18 @@
   {{ show_pager(url_for('album.all'), pages) }}
 {%- endmacro %}
 
-{% macro artists(artists, pages) -%}
-  <form method="GET" action="{{ url_for('.all') }}" class="table-search">
-    <input type="search" placeholder="앨범 이름입력해주세요." name="name" />
-    <button>
-      <span class="glyphicon glyphicon-search"></span>
-      검색
-    </button>
-  </form>
+{% macro artists(artists, pages, search=True) -%}
+  {% if search -%}
+    <form method="GET"
+          action="{{ url_for('artist.all')  }}"
+          class="table-search">
+      <input type="search" placeholder="앨범 이름입력해주세요." name="name" />
+      <button>
+        <span class="glyphicon glyphicon-search"></span>
+        검색
+      </button>
+    </form>
+  {%- endif %}
 
   {% call dv_table('artists', ('커버', '가수', '관심 등록')) -%}
     {% for artist in artists -%}

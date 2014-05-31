@@ -39,6 +39,7 @@ nav ul #btn-profile { float: right; }
 .table-search {
   width: 80%; height: 50px;
   margin: 0 auto;
+  clear: left;
 }
 
 .table-search input:focus {
@@ -59,4 +60,33 @@ nav ul #btn-profile { float: right; }
   color: #fff;
   font-size: 1.5em;
   background: #83b5a9;
+}
+
+#love-badge {
+  font-size: 1.5em;
+  color: #222;
+  width: 80%;
+  margin: 0 auto;
+}
+
+#love-badge a {
+  color: #222;
+}
+#love-badge dt { text-align: center; }
+
+#love-badge dd {
+  font-weight: bold;
+  text-align: center;
+  font-size: 2em;
+}
+.love-box {
+  width: 200px;
+  float: left;
+  margin-bottom: 20px;
+}
+
+.user-head {
+  clear: left;
+  width: 80%;
+  margin: 40px auto;
 }

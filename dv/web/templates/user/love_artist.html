@@ -1,18 +1,6 @@
 {% extends 'base.html' %}
+{% from 'tables.html' import artists %}
 
 {% block htmlbody %}
-<table>
-  <thead>
-    <tr>
-      <th>아티스트 이름</th>
-    </tr>
-  </thead>
-  <tbody>
-      {% for artist in love_artists -%}
-        <tr>
-          <td>{{ artist.name }}</td>
-        </tr>
-      {%- endfor %}
-  </tbody>
-</table>
+  {{ artists(love_artists, pager, False) }}
 {% endblock %}

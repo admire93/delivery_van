@@ -21,6 +21,9 @@ class User(Base):
 
     love_artists = relationship('Artist', secondary='love_artists')
 
+    love_artist_query = relationship('Artist', secondary='love_artists',
+                                     lazy='dynamic')
+
     # love_albums
 
     latest_readed_album = relationship('Album',
