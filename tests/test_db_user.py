@@ -38,8 +38,8 @@ def test_user_read_album(f_session, f_user, f_album):
     ra = ReadAlbum(user=f_user, album=f_album)
     f_session.add(ra)
     f_session.commit()
-    assert f_user.read_album
-    assert f_user.read_album.id
+    assert f_user.latest_readed_album
+    assert f_user.latest_readed_album.id
 
 
 @fixture
