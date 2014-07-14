@@ -3,5 +3,5 @@
 {% from 'tables.html' import artists as t %}
 
 {% block htmlbody %}
-  {{ t(artists, pages) }}
+  {{ t(artists, pages, True, me) }}
 {% endblock %}
