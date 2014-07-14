@@ -48,7 +48,7 @@ def is_logined():
                    .all()
             if user:
                 return user[0]
-    return False
+    return None
 
 
 def need_login(f):

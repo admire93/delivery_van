@@ -31,7 +31,7 @@ def user(user_id):
     album_query = session.query(Album)\
                   .join(LoveArtist, LoveArtist.artist_id == Album.artist_id)\
                   .filter(LoveArtist.user_id == user_id)\
-                  .order_by(LoveArtist.created_at.asc())
+                  .order_by(LoveArtist.created_at.desc())
     albums = album_query.limit(20).all()
     albums_count = album_query.count()
     readed = 0
@@ -82,7 +82,6 @@ def add_love_artist(user_id):
 
 
 @bp.route('/<int:user_id>/love_artists/', methods=['GET'])
-@need_login
 def love_artist(user_id):
     page, offset, limit = bind_page()
     user = session.query(User)\
@@ -90,6 +89,10 @@ def love_artist(user_id):
            .all()
     if not user:
         abort(404)
+    login_user = is_logined()
+    other = None
+    if login_user is not None and login_user.id != user[0].id:
+        other = login_user
     love_artists = user[0].love_artist_query\
                    .offset(offset)\
                    .limit(limit)\
@@ -98,7 +101,8 @@ def love_artist(user_id):
                            love_artists=love_artists,
                            pager=pager(page,
                                        user[0].love_artist_query.count(),
-                                       limit))
+                                       limit),
+                           other=other)
 
 
 @bp.route('/<int:user_id>/love_artists/<int:artist_id>/', methods=['POST'])
