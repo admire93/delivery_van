@@ -1,0 +1,8 @@
+table.dv-table tbody button:hover {
+  color: #D95C58;
+}
+
+table.dv-table tbody button.loved {
+  background: #D95C58;
+  color: #ffffff;
+}

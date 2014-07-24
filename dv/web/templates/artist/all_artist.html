@@ -1,7 +1,17 @@
 {% extends 'base.html' %}
 
 {% from 'tables.html' import artists as t %}
+{% from 'util.html' import import_static %}
 
 {% block htmlbody %}
   {{ t(artists, pages, True, me) }}
+{% endblock %}
+
+{% block userscript %}
+  {% if me -%}
+    <script type="text/javascript">
+      window.dvRoute['user.is_love_artist'] = '{{ url_for('user.is_love_artist', user_id=me.id) }}';
+    </script>
+    {{ import_static('js', 'all_artist.js') }}
+  {%- endif %}
 {% endblock %}

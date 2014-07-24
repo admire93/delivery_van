@@ -8,6 +8,7 @@
     {{ import_bower('css', 'bootstrap', 'css/bootstrap.css') }}
     {{ import_static('css', 'base.css') }}
     {{ import_static('css', 'albums.css') }}
+    {{ import_static('css', 'table.css') }}
     {% block htmlhead %}
     {% endblock %}
   </head>
@@ -51,5 +52,12 @@
     </div>
     {{ import_bower('js', 'jquery', 'jquery.min.js') }}
     {{ import_bower('js', 'bootstrap', 'js/bootstrap.min.js') }}
+    <script type="text/javascript">
+      if(!window.hasOwnProperty('dvRoute')) {
+        window['dvRoute'] = {};
+      }
+    </script>
+    {% block userscript %}
+    {% endblock %}
   </body>
 </html>
