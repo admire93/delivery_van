@@ -165,13 +165,15 @@ def is_love_artist(user_id):
     if user[0].id != g.current_user.id:
         abort(403)
     artist_ids_query =  request.args.get('artist_ids')
-    artist_ids = artist_ids_query.split(',')
-    try:
-        artist_ids = map(lambda x: int(x.strip()), artist_ids)
-    except ValueError as e:
-        abort(400)
-    love_artists = session.query(LoveArtist)\
-                   .filter(LoveArtist.user == user[0])\
-                   .filter(LoveArtist.artist_id.in_(artist_ids))\
-                   .all()
-    return jsonify(artist_ids=[artist.id for artist in love_artists])
+    love_artists = []
+    if artist_ids_query is not None:
+        artist_ids = artist_ids_query.split(',')
+        try:
+            artist_ids = map(lambda x: int(x.strip()), artist_ids)
+        except ValueError as e:
+            abort(400)
+        love_artists = session.query(LoveArtist)\
+                       .filter(LoveArtist.user == user[0])\
+                       .filter(LoveArtist.artist_id.in_(artist_ids))\
+                       .all()
+    return jsonify(artist_ids=[la.artist_id for la in love_artists])
